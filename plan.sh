@@ -1,10 +1,13 @@
 pkg_name=telegraf
-pkg_origin=jplimack
+pkg_origin=core
 pkg_version="1.3.1"
-pkg_maintainer="Jake Plimack <jake.plimack@gmail.com>"
+pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 pkg_license=('The MIT License (MIT)')
-pkg_scaffolding=core/scaffolding-go
+pkg_description="telegraf - client for InfluxDB"
+pkg_upstream_url="https://github.com/influxdata/telegraf/"
+pkg_scaffolding="core/scaffolding-go"
 pkg_svc_run="bin/telegraf"
+pkg_bin_dirs=(bin)
 
 do_begin() {
     export GOBIN="${GOPATH}/bin"
@@ -35,7 +38,6 @@ do_prepare() {
 do_build() {
     go get github.com/influxdata/telegraf
     cd $GOPATH/src/github.com/influxdata/telegraf
-    echo "GOPATH: $GOPATH"
     make
 }
 
@@ -44,7 +46,8 @@ do_check() {
 }
 
 do_install() {
-    return 0
+    mkdir -p ${pkg_prefix}/bin
+    cp /bin/telegraf ${pkg_prefix}/bin
 }
 
 do_strip() {
